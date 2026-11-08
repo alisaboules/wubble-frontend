@@ -1,14 +1,21 @@
+
 'use client';
-import { store } from '@/store';
+
 import type { ReactNode } from 'react';
-import { Provider } from 'react-redux';
+
+import { ThemeProvider } from './ThemeProvider';
+import { QueryProvider } from './QueryProvider';
+import { ReduxProvider } from './ReduxProvider';
+
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
-    <Provider store={store}>
-      <>
-      {children}
-      </>
-    </Provider>
+    <ThemeProvider>
+      <ReduxProvider>
+        <QueryProvider>
+          {children}
+        </QueryProvider>
+      </ReduxProvider>
+    </ThemeProvider>
   );
 }

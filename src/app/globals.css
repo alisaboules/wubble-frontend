@@ -1,26 +1,150 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fff;
+  --foreground: #242424;
+  --gblue: #3FA9F5;
+  --gcyan: #56E1E8;
+  --gpurple: #5C58ED;
+  --scrollbar: #ccc;
+  --border: #B3B3B3;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-gblue: var(--gblue);
+  --color-gcyan: var(--gcyan);
+  --color-gpurple: var(--gpurple);
+  --color-border: var(--border);
+  --font-roboto: var(--font-roboto-sans);
+  --font-notosans: var(--font-noto-sans);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.dark {
+    /* --background: #0D1631; */
+    --background: #122D70;
+    --foreground: #fff;
+    --gblue: #3FA9F5;
+    --gcyan: #56E1E8;
+    --gpurple: #5C58ED;
+    --scrollbar: #ccc;
+    --border: #B3B3B3;
 }
 
 body {
-  background: var(--background);
+  /* background: radial-gradient(ellipse 40% 50% at 60% 70%, #399FA8 0%, #399FA8 20.4%, #399FA8e4 36.32%, #399FA8a5 52.44%, #399FA85a 67.96%, #399FA81b 80.48%, #399FA800 100%),
+    radial-gradient(ellipse 26% 65% at 20% 35%, #2585C5 0%, #2585C5 20.4%, #2585C5e4 36.32%, #2585C5a5 52.24%, #2585C55a 68.16%, #2585C51b 84.08%, #2585C500 100%),
+    radial-gradient(ellipse 35% 45% at 74% 24.5%, #37349E 0%, #37349E 20.9%, #37349Ee4 36.12%, #37349Ea5 52.34%, #37349E5a 68.56%, #37349E1b 84.08%, #37349E00 100%),
+    #101B3D; */
+  background:
+  radial-gradient(
+    ellipse 36% 65% at 20% 35%,
+    var(--gblue) 0%,
+    var(--gblue) 20.4%,
+    color-mix(in srgb, var(--gblue) 89%, transparent) 36.32%,
+    color-mix(in srgb, var(--gblue) 65%, transparent) 52.24%,
+    color-mix(in srgb, var(--gblue) 35%, transparent) 68.16%,
+    color-mix(in srgb, var(--gblue) 11%, transparent) 84.08%,
+    transparent 100%
+  ),
+  radial-gradient(
+    ellipse 40% 50% at 60% 70%,
+    var(--gcyan) 0%,
+    var(--gcyan) 20.4%,
+    color-mix(in srgb, var(--gcyan) 89%, transparent) 36.32%,
+    color-mix(in srgb, var(--gcyan) 65%, transparent) 52.44%,
+    color-mix(in srgb, var(--gcyan) 35%, transparent) 67.96%,
+    color-mix(in srgb, var(--gcyan) 11%, transparent) 80.48%,
+    transparent 100%
+  ),
+  radial-gradient(
+    ellipse 45% 45% at 74% 24.5%,
+    var(--gpurple) 0%,
+    var(--gpurple) 20.9%,
+    color-mix(in srgb, var(--gpurple) 89%, transparent) 36.12%,
+    color-mix(in srgb, var(--gpurple) 65%, transparent) 52.34%,
+    color-mix(in srgb, var(--gpurple) 35%, transparent) 68.56%,
+    color-mix(in srgb, var(--gpurple) 11%, transparent) 84.08%,
+    transparent 100%
+  ),
+  /* radial-gradient(ellipse 25% 35% at 74% 24.5%, #9B8CF0 0%, #9B8CF0 20.9%, #9B8CF0e4 36.12%, #9B8CF0a5 52.34%, #9B8CF05a 68.56%, #9B8CF01b 84.08%, #9B8CF000 100%), */
+   var(--background); 
+   /* background-color: hsl(250, 50%, 98%); 
+    background-image: 
+        radial-gradient(at 15% 20%,  hsl(340, 88%, 80%) 0px, transparent 60%), 
+        radial-gradient(at 85% 15%,  hsl(205, 85%, 76%) 0px, transparent 60%), 
+        radial-gradient(at 50% 55%,  hsl(272, 75%, 84%) 0px, transparent 60%), 
+        radial-gradient(at 10% 85%,  hsl(185, 72%, 74%) 0px, transparent 55%), 
+        radial-gradient(at 88% 80%,  hsl(320, 80%, 82%) 0px, transparent 55%);  */
+  position: relative;
+  isolation: isolate;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  font-family: var(--font-noto-sans), Arial, sans-serif;
+}
+
+::-webkit-scrollbar {
+    width: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--gpurple);
+    border-radius: 10px;
+}
+
+.recaptcha1 {
+  @apply mb-3 w-full h-full;
+  display: flex;
+  justify-content: center;
+
+  > div {
+    transform: scale(0.95);
+    transform-origin: top center;
+    filter: invert(1) grayscale(1);
+  }
+}
+
+.recaptcha2 {
+  @apply mb-3 w-full h-full;
+  display: flex;
+  justify-content: center;
+
+  > div {
+    transform: scale(0.95);
+    transform-origin: top center;
+  }
+}
+
+input {
+  @apply outline-none;
+}
+
+button {
+  @apply cursor-pointer;
+}
+
+@media (max-width: 767px) {
+  body {
+    background:
+      /* radial-gradient(
+        ellipse 75% 40% at 15% 20%,
+        var(--gblue) 0%,
+        color-mix(in srgb, var(--gblue) 50%, transparent) 50%,
+        transparent 100%
+      ), */
+      radial-gradient(
+        ellipse 90% 35% at 75% 75%,
+        var(--gcyan) 0%,
+        color-mix(in srgb, var(--gcyan) 45%, transparent) 50%,
+        transparent 100%
+      ),
+      radial-gradient(
+        ellipse 70% 30% at 90% 5%,
+        var(--gpurple) 0%,
+        color-mix(in srgb, var(--gpurple) 45%, transparent) 50%,
+        transparent 100%
+      ),
+      var(--background);
+  }
 }
