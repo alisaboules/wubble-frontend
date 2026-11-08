@@ -67,7 +67,7 @@ export function Auth() {
     setMounted(true);
   }, []);
   return (
-    <div className="w-screen h-screen flex justify-center items-center overflow-x-hidden ">
+    <div className="w-screen min-h-dvh flex justify-center items-center overflow-x-hidden ">
       <div className="w-full md:w-1/2 lg:w-1/4 px-13.75 py-8.25 shadow-[0px_0px_50px_0px_#00000040] rounded-3xl bg-background flex-column justify-center">
         <Heading className="justify-center">{isLogin ? 'Вход' : 'Регистрация'}</Heading>
 
