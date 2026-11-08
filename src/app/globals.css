@@ -37,6 +37,27 @@ body {
     radial-gradient(ellipse 26% 65% at 20% 35%, #2585C5 0%, #2585C5 20.4%, #2585C5e4 36.32%, #2585C5a5 52.24%, #2585C55a 68.16%, #2585C51b 84.08%, #2585C500 100%),
     radial-gradient(ellipse 35% 45% at 74% 24.5%, #37349E 0%, #37349E 20.9%, #37349Ee4 36.12%, #37349Ea5 52.34%, #37349E5a 68.56%, #37349E1b 84.08%, #37349E00 100%),
     #101B3D; */
+  
+   /* background-color: hsl(250, 50%, 98%); 
+    background-image: 
+        radial-gradient(at 15% 20%,  hsl(340, 88%, 80%) 0px, transparent 60%), 
+        radial-gradient(at 85% 15%,  hsl(205, 85%, 76%) 0px, transparent 60%), 
+        radial-gradient(at 50% 55%,  hsl(272, 75%, 84%) 0px, transparent 60%), 
+        radial-gradient(at 10% 85%,  hsl(185, 72%, 74%) 0px, transparent 55%), 
+        radial-gradient(at 88% 80%,  hsl(320, 80%, 82%) 0px, transparent 55%);  */
+  position: relative;
+  isolation: isolate;
+  color: var(--foreground);
+  min-height: 100vh;
+  font-family: var(--font-noto-sans), Arial, sans-serif;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
   background:
   radial-gradient(
     ellipse 36% 65% at 20% 35%,
@@ -70,18 +91,6 @@ body {
   ),
   /* radial-gradient(ellipse 25% 35% at 74% 24.5%, #9B8CF0 0%, #9B8CF0 20.9%, #9B8CF0e4 36.12%, #9B8CF0a5 52.34%, #9B8CF05a 68.56%, #9B8CF01b 84.08%, #9B8CF000 100%), */
    var(--background); 
-   /* background-color: hsl(250, 50%, 98%); 
-    background-image: 
-        radial-gradient(at 15% 20%,  hsl(340, 88%, 80%) 0px, transparent 60%), 
-        radial-gradient(at 85% 15%,  hsl(205, 85%, 76%) 0px, transparent 60%), 
-        radial-gradient(at 50% 55%,  hsl(272, 75%, 84%) 0px, transparent 60%), 
-        radial-gradient(at 10% 85%,  hsl(185, 72%, 74%) 0px, transparent 55%), 
-        radial-gradient(at 88% 80%,  hsl(320, 80%, 82%) 0px, transparent 55%);  */
-  position: relative;
-  isolation: isolate;
-  color: var(--foreground);
-  min-height: 100vh;
-  font-family: var(--font-noto-sans), Arial, sans-serif;
 }
 
 ::-webkit-scrollbar {
@@ -125,7 +134,7 @@ button {
 }
 
 @media (max-width: 767px) {
-  body {
+  body::before {
     background:
       /* radial-gradient(
         ellipse 75% 40% at 15% 20%,
