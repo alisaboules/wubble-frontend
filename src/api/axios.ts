@@ -1,11 +1,7 @@
 import { API_URL } from '@/constants/api.constants';
-import { EnumTokens } from '@/constants/auth.constants';
-import type { CreateAxiosDefaults } from 'axios';
+import type { CreateAxiosDefaults, InternalAxiosRequestConfig } from 'axios';
 import axios from 'axios';
-import Cookies from 'js-cookie';
-
 import { authService } from '@/services/auth.services';
-import { errorCatch } from './api.helper';
 
 const options: CreateAxiosDefaults = {
   baseURL: API_URL,
@@ -19,39 +15,59 @@ export const axiosClassic = axios.create(options);
 
 export const instance = axios.create(options);
 
-instance.interceptors.request.use((config) => {
-  const accessToken = Cookies.get(EnumTokens.ACCESS_TOKEN);
+type RetryConfig = InternalAxiosRequestConfig & {
+  _isRetry?: boolean;
+};
 
-  if (config.headers && accessToken) {
-    config.headers.Authorization = `Bearer ${accessToken}`;
+let refreshPromise: Promise<void> | null = null;
+
+instance.interceptors.request.use((config) => {
+  const accessToken = typeof document !== 'undefined'
+    ? document.cookie
+        .split('; ')
+        .find((cookie) => cookie.startsWith('wubble_access='))
+        ?.split('=')[1]
+    : undefined;
+
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${decodeURIComponent(accessToken)}`;
+  } else {
+    delete config.headers.Authorization;
   }
 
   return config;
 });
 
 instance.interceptors.response.use(
-  (config) => config,
+  (response) => response,
   async (error) => {
-    const originRequest = error.config;
-    if (
-      (error?.response?.status == 401 ||
-        errorCatch(error) == 'jwt expired' ||
-        errorCatch(error) == 'jwt must be provided') &&
-      originRequest &&
-      !originRequest._isRetry
-    ) {
-      originRequest._isRetry = true;
-      try {
-        await authService.getNewTokens();
-        return instance.request(originRequest);
-      } catch (error) {
-        if (errorCatch(error) == 'jwt expired' || errorCatch(error) == 'jwt must be provided') {
-          authService.removeFromStorage();
-          throw error;
-        }
-      }
+    if (!axios.isAxiosError(error)) {
+      throw error;
     }
-    throw error;
-  },
-);
+    const originRequest = error.config as RetryConfig | undefined;
+    if (error.response?.status !== 401 || !originRequest || originRequest._isRetry
+    ) {
+      throw error;
+    }
+    originRequest._isRetry = true;
+    try {
+      if (!refreshPromise) {
+        refreshPromise = authService.getNewTokens()
+          .then(() => undefined)
+          .finally(() => {
+            refreshPromise = null;
+          });
+      }
+      await refreshPromise;
 
+      return instance.request(originRequest);
+    } catch (refreshError) {
+      if (axios.isAxiosError(refreshError) && refreshError.response?.status === 401
+      ) {
+        authService.removeFromStorage();
+      }
+
+      throw refreshError;
+    }
+  }
+);

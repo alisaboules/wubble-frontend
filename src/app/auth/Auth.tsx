@@ -5,9 +5,7 @@ import { Field } from '@/components/ui/field/Field';
 import { Heading } from '@/components/ui/Heading';
 import { SkeletonLoader } from '@/components/ui/SkeletonLoader';
 import { useAuthForm } from '@/hooks/useAuthForm';
-// import { useAuthForm } from '@/hooks/useAuthForm';
-import type { TAuthForm } from '@/types/auth.types';
-
+import { TAuthFormData } from '@/types/auth.types';
 import { cn } from '@/utils/cn';
 import { useTheme } from 'next-themes';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -33,12 +31,14 @@ export function Auth() {
     handleSubmit,
     getValues,
     reset,
+    setError,
+    clearErrors,
     formState: { errors },
-  } = useForm<TAuthForm>({
+  } = useForm<TAuthFormData>({
     mode: 'onChange',
   });
   const type = isLogin ? 'login' : 'register';
-  const { onSubmit, recaptchaRef, isLoading } = useAuthForm(type, reset);
+  const { onSubmit, recaptchaRef, isLoading } = useAuthForm(type, reset, setError);
   const [isCaptchaLoaded, setIsCaptchaLoaded] = useState(false);
   // useEffect(() => {
   //   const checkCaptcha = () => {
@@ -79,7 +79,7 @@ export function Auth() {
               <Field
                 label="Имя пользователя"
                 type="text"
-                registration={register('name', {
+                registration={register('username', {
                   required: 'Username is required.',
                   minLength: {
                     value: 3,
@@ -94,7 +94,7 @@ export function Auth() {
                     message: 'Допустимы только лат. буквы, цифры и _.',
                   },
                 })}
-                error={errors.name?.message}
+                error={errors.username?.message}
                 placeholder="Введите имя"
               />
             )}
@@ -107,6 +107,7 @@ export function Auth() {
                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                   message: 'Введите корректный адрес почты.',
                 },
+                onChange: () => clearErrors('email')
               })}
               error={errors.email?.message}
               placeholder="Введите почту"

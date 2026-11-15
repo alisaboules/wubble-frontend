@@ -2,22 +2,26 @@
 import { useEffect } from 'react'
 import { authService } from '@/services/auth.services'
 import { useAppDispatch } from '@/store'
-import { clearAuthData } from '@/store/auth.slice'
+import { clearAuthData, setAuthData } from '@/store/auth.slice'
 
 export function AuthInitializer() {
-	const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
-	useEffect(() => {
-		const initAuth = async () => {
-			try {
-				await authService.getNewTokens()
-			} catch {
-				dispatch(clearAuthData())
-			}
-		}
+  useEffect(() => {
+    const initAuth = async () => {
+      try {
+        await authService.getNewTokens();
 
-		initAuth()
-	}, [dispatch])
+        const { data: user } = await authService.getMe();
 
-	return null
+        dispatch(setAuthData(user));
+      } catch {
+        dispatch(clearAuthData());
+      }
+    };
+
+    initAuth();
+  }, [dispatch]);
+
+  return null;
 }
