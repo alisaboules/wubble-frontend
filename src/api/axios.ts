@@ -19,15 +19,14 @@ type RetryConfig = InternalAxiosRequestConfig & {
   _isRetry?: boolean;
 };
 
-let refreshPromise: Promise<void> | null = null;
-
 instance.interceptors.request.use((config) => {
-  const accessToken = typeof document !== 'undefined'
-    ? document.cookie
-        .split('; ')
-        .find((cookie) => cookie.startsWith('wubble_access='))
-        ?.split('=')[1]
-    : undefined;
+  const accessToken =
+    typeof document !== 'undefined'
+      ? document.cookie
+          .split('; ')
+          .find((cookie) => cookie.startsWith('wubble_access='))
+          ?.split('=')[1]
+      : undefined;
 
   if (accessToken) {
     config.headers.Authorization = `Bearer ${decodeURIComponent(accessToken)}`;
@@ -45,29 +44,20 @@ instance.interceptors.response.use(
       throw error;
     }
     const originRequest = error.config as RetryConfig | undefined;
-    if (error.response?.status !== 401 || !originRequest || originRequest._isRetry
-    ) {
+    if (error.response?.status !== 401 || !originRequest || originRequest._isRetry) {
       throw error;
     }
     originRequest._isRetry = true;
     try {
-      if (!refreshPromise) {
-        refreshPromise = authService.getNewTokens()
-          .then(() => undefined)
-          .finally(() => {
-            refreshPromise = null;
-          });
-      }
-      await refreshPromise;
+      await authService.getNewTokens();
 
       return instance.request(originRequest);
     } catch (refreshError) {
-      if (axios.isAxiosError(refreshError) && refreshError.response?.status === 401
-      ) {
+      if (axios.isAxiosError(refreshError) && refreshError.response?.status === 401) {
         authService.removeFromStorage();
       }
 
       throw refreshError;
     }
-  }
+  },
 );
