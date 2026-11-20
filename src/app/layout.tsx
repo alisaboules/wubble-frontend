@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Roboto, Noto_Sans } from 'next/font/google';
+import { Roboto, Noto_Sans, ADLaM_Display } from 'next/font/google';
 import "./globals.css";
 import { Providers } from "@/providers/Providers";
 import { SITE_URL } from "@/constants/api.constants";
@@ -14,6 +14,12 @@ const geistNotoSans = Noto_Sans({
   subsets: ['latin', 'cyrillic'],
 });
 
+const adlam = ADLaM_Display({
+  variable: '--font-adlam-display',
+  weight: '400',
+  subsets: ['latin'],
+});
+
 export const metadata: Metadata = {
   title: "Wubble",
   description: "Web service monitoring system",
@@ -25,7 +31,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       suppressHydrationWarning
       lang="en"
-      className={`${geistRoboto.variable} ${geistNotoSans.variable} h-full antialiased text-base`}
+      className={`${geistRoboto.variable} ${geistNotoSans.variable} ${adlam.variable} h-full antialiased text-base`}
     >
       <body className="min-h-full flex flex-col">
         <Providers>

@@ -19,6 +19,7 @@
   --color-border: var(--border);
   --font-roboto: var(--font-roboto-sans);
   --font-notosans: var(--font-noto-sans);
+  --font-adam: var(--font-adlam-display);
 }
 
 .dark {

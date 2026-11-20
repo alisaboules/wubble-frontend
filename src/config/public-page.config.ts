@@ -1,6 +1,5 @@
 class PublicPage {
   AUTH = '/auth';
-
   HOME = '/';
  
   SEARCH(searchTerm: string) {
@@ -8,4 +7,4 @@ class PublicPage {
   }
 }
 
-export const PUBLIC_PAGE = new PublicPage()
+export const PUBLIC_PAGE = new PublicPage();

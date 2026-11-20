@@ -10,6 +10,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { setAuthData } from '@/store/auth.slice';
 import { useAppDispatch } from '@/store';
+import { USER_PAGE } from '@/config/user-page.config';
 
 export function useAuthForm(type: 'login' | 'register', reset: UseFormReset<TAuthFormData>, setError: UseFormSetError<TAuthFormData>) {
   const router = useRouter();
@@ -49,7 +50,8 @@ export function useAuthForm(type: 'login' | 'register', reset: UseFormReset<TAut
       success: () => {
         startTransition(() => {
           reset();
-          router.push(PUBLIC_PAGE.HOME);
+          router.refresh();
+          router.push(USER_PAGE.HOME);
         });
         return 'Success login!';
       },

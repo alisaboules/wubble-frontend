@@ -19,7 +19,6 @@ export function Auth() {
 
   const { resolvedTheme } = useTheme();
 
-  console.log('Текущая тема:', resolvedTheme);
   const isDark = resolvedTheme === 'dark';
   const isLogin = searchParams.get('mode') === 'login';
 

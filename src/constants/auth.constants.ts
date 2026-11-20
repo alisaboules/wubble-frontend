@@ -1,4 +1,4 @@
 export enum EnumTokens {
-  ACCESS_TOKEN = 'accessToken',
-  REFRESH_TOKEN = 'refreshToken'
+  ACCESS_TOKEN = 'wubble_access',
+  REFRESH_TOKEN = 'wubble_refresh',
 }
